@@ -16,15 +16,29 @@ public class SPaceSavingTopNCascadingTest {
 
 
     private final static String TEST_FILE = "src/test/resources/wordcount/words.txt";
-    private final static String EXPECTED_OUTPUT = "src/test/resources/wordcount/expected-output.txt";
+    private final static String EXPECTED_OUTPUT_UNLIMITED_SPACE = "src/test/resources/wordcount/expected-output-unlimited.txt";
+    private final static String EXPECTED_OUTPUT_LIMITED_SPACE = "src/test/resources/wordcount/expected-output-limited.txt";
     private final static String OUT_CASCADING = "out-cascading-wc";
 
 
     @Test
-    public void testCascading() throws Exception {
-        SpaceSavingTopNCascading.main(new String[]{TEST_FILE, OUT_CASCADING,"24"});
+    public void testTopNWithUnlimitedSpace() throws Exception {
+        SpaceSavingTopNCascading.main(new String[]{TEST_FILE, OUT_CASCADING,"100000000"});
         String outCascading = getOutputAsText(OUT_CASCADING + "/part-00000");
-        String expectedOutput = getOutputAsText(EXPECTED_OUTPUT);
+        String expectedOutput = getOutputAsText(EXPECTED_OUTPUT_UNLIMITED_SPACE);
+
+        //should match exact result when given unlimited space..
+        assertEquals(expectedOutput, outCascading);
+    }
+
+
+    @Test
+    public void testTopNWithLimitedSpace() throws Exception {
+        SpaceSavingTopNCascading.main(new String[]{TEST_FILE, OUT_CASCADING,"10"});
+        String outCascading = getOutputAsText(OUT_CASCADING + "/part-00000");
+        String expectedOutput = getOutputAsText(EXPECTED_OUTPUT_LIMITED_SPACE);
+
+        //should give approximate result when given unlimited space..
         assertEquals(expectedOutput, outCascading);
     }
 
