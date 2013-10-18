@@ -1,4 +1,4 @@
-package cascading.util.collections;
+package com.akeera.collections;
 
 import com.akeera.collections.ClassicLinkedList;
 import com.akeera.collections.Node;
